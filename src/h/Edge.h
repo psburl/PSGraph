@@ -6,6 +6,7 @@
 #include <string>
 #include <fstream>
 #include <sstream>
+#include <ostream>
 
 #include "../h/Vertice.h"
 
@@ -25,7 +26,7 @@ public:
 	Edge<T>(T u, T w);
 
 	string ToString();
-
+	bool Contains(T v);
 };
 
 

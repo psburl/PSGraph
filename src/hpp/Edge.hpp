@@ -1,6 +1,9 @@
 
 	// -- Methods
-
+template <class T>
+bool Edge<T>::Contains(T v){
+	return (this->u == v || this->w == v);
+};
 
 template <class T>
 vector<T> Edge<T>::GetEdge(){

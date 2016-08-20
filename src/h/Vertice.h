@@ -22,6 +22,11 @@ class Vertice{
 		Vertice<T>();
 
 		string ToString();
+
+		bool operator==(Vertice<T> v);
+		bool operator!=(Vertice<T> v);
+		bool operator>(Vertice<T> v);
+		bool operator<(Vertice<T> v);
 };
 
 #include "../hpp/Vertice.hpp"

@@ -10,39 +10,28 @@
 
 using namespace std;
 
+#define t_Vertice Vertice<T>
+#define t_Edge Edge<t_Vertice>
+
 template <class T>
 class Graph{
 
-private:
-	vector< Vertice<T> > vertices;
-	vector< Edge<T> > edges;
+public:
+	vector<t_Vertice> vertices;
+	vector<t_Edge> edges;
 
 public:
 	int Deg(T v);
 	int Deg();
 
+	bool ContainsVertice(T v);
+	void InsertVertice(T v);
+
+	void InsertEdge(t_Vertice u, t_Vertice v);
+
 	Graph<T>();	
 };
 
-
-	template<typename T>
-	int Graph<T>::Deg(){
-		return this.edges.size()/2;
-	};
-
-	template<typename T>
-	int Graph<T>::Deg(T v){
-		
-		int Sum = 0;
-
-		for(typename std::vector<T>::const_iterator edge = this->edges.begin(); edge != this->edges.end(); ++edge)
-			Sum+= 1;
-
-		return Sum;
-	};
-
-	template<class T>
-	Graph<T>::Graph(){};
 
 #include "../hpp/Graph.hpp"
 #endif

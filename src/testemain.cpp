@@ -5,8 +5,11 @@
 #include <vector>
 #include <string>
 #include <cstdlib>
+#include <ostream>
 
+#include "h/Vertice.h"
 #include "h/Edge.h"
+#include "h/Graph.h"
 
 using namespace std;
 
@@ -15,10 +18,13 @@ using namespace std;
 
 int main(void){
 
-	m_Edge edge = m_Edge(m_Vertice("asd"), m_Vertice("3"));
+	Graph<string> G = Graph<string>();
 
+	G.InsertVertice("oi");
+	G.InsertVertice("ui");
+	G.InsertEdge(m_Vertice("oi"), m_Vertice("ui"));
 
-	cout<< edge.ToString();
+	cout << G.Deg();
 };
 
 #endif

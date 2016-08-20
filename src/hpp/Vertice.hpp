@@ -1,10 +1,30 @@
+	// -- operators
+
+template<class T>
+bool Vertice<T>::operator==(Vertice<T> v){
+	return this->GetAlias() == v.GetAlias();
+};
+
+template<class T>
+bool Vertice<T>::operator!=(Vertice<T> v){
+	return this->GetAlias() != v.GetAlias();
+};
+
+template<class T>
+bool Vertice<T>::operator<(Vertice<T> v){
+	return this->GetAlias() < v.GetAlias();
+};
+
+template<class T>
+bool Vertice<T>::operator>(Vertice<T> v){
+	return v.GetAlias() < this->GetAlias();
+};
 
 	// -- Methods
 template <class T>
 string Vertice<T>::ToString(){
 	return to_string(this->u);
 };
-
 
 	// -- Gets --
 template <class T>
