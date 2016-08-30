@@ -4,27 +4,29 @@
 #include <iostream>
 #include <vector>
 #include <string>
-#include <cstdlib>
+#include <cstdlib>	
 #include <ostream>
 
-#include "h/Vertice.h"
 #include "h/Edge.h"
 #include "h/Graph.h"
 
 using namespace std;
 
-#define m_Vertice Vertice<string>
-#define m_Edge Edge<m_Vertice>
+#define GType int	
+
+#define m_Edge Edge<GType>
 
 int main(void){
 
-	Graph<string> G = Graph<string>();
+	Graph<GType> G = Graph<GType>();
 
-	G.InsertVertice("oi");
-	G.InsertVertice("ui");
-	G.InsertEdge(m_Vertice("oi"), m_Vertice("ui"));
+	G.InsertVertice(1);
+	G.InsertVertice(2);
+	G.InsertEdge(m_Edge(G.vertices[1], G.vertices[0]));
 
-	cout << G.Deg();
+	G.Print();
+
+		
 };
 
 #endif

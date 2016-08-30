@@ -12,7 +12,7 @@ using namespace std;
 template <class T>
 class Vertice{
 
-	public:
+	private:
 		T alias;
 
 	public: 
