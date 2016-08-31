@@ -41,6 +41,8 @@ void Graph<T>::InsertVertice(T v){
 	
 	if(!this->ContainsVertice(v)){
 		this->vertices.push_back(v);
+
+		this->SortVertices();
 	}
 };
 
@@ -61,6 +63,8 @@ void Graph<T>::InsertEdge(t_Edge e){
 
 	if(!this->ContainsEdge(e)){
 		this->edges.push_back(e);
+
+		this->SortEdges();
 	}
 };
 
@@ -82,33 +86,48 @@ void Graph<T>::RemoveEdge(t_Edge e){
 template<class T>
 bool Graph<T>::HasWay(T u, T w){
 
+	map<T, bool> visits = map<T,bool>();
+
+	ReachV(u, visits);
+
+	return visits[w];
 };
 
 template<class T>
-void Graph<T>::ReachV(T v, map<T, bool> visited){
+void Graph<T>::ReachV(T v, map<T, bool>& visited){
 
 	visited[v] = true;
 	
-	vector<T> neighboors = GetNeighboors();
+	vector<T> neighboors = GetNeighboors(v);
 
 	for(int i = 0; i < neighboors.size(); i++){
 
-		if()
+		if(!visited[neighboors[i]])
+			ReachV(neighboors[i], visited);
 	}
-
-	
 };
 
+template <class T>
+void Graph<T>::SortEdges(){
+
+	sort (this->edges.begin(), this->edges.begin() + this->edges.size());
+};
+
+template <class T>
+void Graph<T>::SortVertices(){
+
+	sort (this->vertices.begin(), this->vertices.begin() + this->vertices.size());
+};
 
 template <class T>
 vector<T> Graph<T>::GetNeighboors(T v){
 	
-	vector<T> neighboors = new vector<T>();
+	vector<T> neighboors = vector<T>();
 	neighboors.clear();
 
 	for(int i = 0; i < this->edges.size(); i++){
 
-		if(this->edges[i].isInitial(v))
+		if(this->edges[i].IsInitial(v, this->isDigraph))
 			neighboors.push_back(this->edges[i].GetOtherV(v));
 	}
 

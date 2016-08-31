@@ -6,6 +6,7 @@
 #include <vector>
 #include <string>
 #include <map>
+#include <algorithm>
 
 #include "../h/Edge.h"
 
@@ -33,8 +34,11 @@ public:
 	void RemoveEdge(t_Edge e);
 
 	bool HasWay(T u, T w);
-	void ReachV(T v, map<T, bool> visited);
+	void ReachV(T v, map<T, bool>& visited);
 	vector<T> GetNeighboors(T v);
+
+	void SortEdges();
+	void SortVertices();
 
 	void Print();
 

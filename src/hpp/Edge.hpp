@@ -14,6 +14,18 @@ bool Edge<T>::operator!=(Edge<T> e){
 	(this->isDigraph || (this->u != e.w || this->w != e.u));
 };
 
+template<class T>
+bool Edge<T>::operator<(Edge<T> e){
+
+	return (this->ToString() < e.ToString());
+};
+
+template<class T>
+bool Edge<T>::operator>(Edge<T> e){
+
+	return (this->ToString() > e.ToString());
+};
+
 	// -- Methods
 
 /*verify if an Edge (or relashionship) contains a vertice*/
