@@ -24,8 +24,8 @@ int main(void){
 	G.InsertVertice(4);
 	G.InsertVertice(1);
 	G.InsertVertice(3);
-	G.InsertEdge(m_Edge(G.vertices[0], G.vertices[1]));
-	G.InsertEdge(m_Edge(G.vertices[0], G.vertices[2]));
+	G.InsertEdge(m_Edge(1, 4));
+	G.InsertEdge(m_Edge(4, 3));
 
 	map<int, bool> visited;
 	

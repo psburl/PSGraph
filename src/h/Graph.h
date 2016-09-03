@@ -19,12 +19,14 @@ class Graph{
 
 public:
 	vector<T> vertices;
-	vector<t_Edge> edges;
+	map <string, t_Edge> Edges;
 	bool isDigraph;
 
 public:
 	int Deg(T v);
 	int Deg();
+
+	string MakeHash(t_Edge e);
 
 	bool ContainsVertice(T v);
 	void InsertVertice(T v);

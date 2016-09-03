@@ -18,11 +18,20 @@ int Graph<T>::Deg(T v){
 
 	int Sum = 0;
 
-	for(int i = 0; i < this->edges.size(); i++)
-		Sum+= (this->edges[i].Contains(v)) ? 1 : 0;
+	for (typename std::map<string,t_Edge>::iterator it=this->Edges.begin(); it!=this->Edges.end(); ++it)
+		Sum+= (it->second.Contains(v)) ? 1 : 0;
 
 	return Sum;
 };
+
+/*Make a hashCode to insert a new edge */
+
+template<class T>
+string Graph<T>::MakeHash(t_Edge e){
+	return e.ToString();
+};
+
+/* Verify if this Graph contains the Vertice v */
 
 template<class T>
 bool Graph<T>::ContainsVertice(T v){
@@ -35,6 +44,7 @@ bool Graph<T>::ContainsVertice(T v){
 	return false;
 };
 
+/* Insert a vertice in Graph if her not contains it */
 
 template<class T>
 void Graph<T>::InsertVertice(T v){
@@ -46,42 +56,35 @@ void Graph<T>::InsertVertice(T v){
 	}
 };
 
+/* Verify if this Graph contains the Edge e */
+
 template<class T>
 bool Graph<T>::ContainsEdge(t_Edge e){
 	
-	for(int i = 0; i < this->edges.size(); i++){
-		if(edges[i] == e){
-			return true;
-		}
-	}
-	return false;
+	return (this->Edges.find(this->MakeHash(e))!= this->Edges.end());
 };
 
+/* Insert an Edge in Graph if her not contains it */
 
 template<class T>
 void Graph<T>::InsertEdge(t_Edge e){
 
 	if(!this->ContainsEdge(e)){
-		this->edges.push_back(e);
-
-		this->SortEdges();
+		this->Edges.insert(std::pair<string,t_Edge>(this->MakeHash(e),e));
 	}
 };
 
+/* Remove an Edge in Graph if her contains it */
 
 template<class T>
 void Graph<T>::RemoveEdge(t_Edge e){
 
 	if(this->ContainsEdge(e)){
-		for(int i = 0; i < this->edges.size(); i++){
-			if(edges[i] == e){
-				edges.erase(edges.begin() + i);
-				break;
-			}
-		}
+		this->Edges.erase(this->MakeHash());
 	}
 };
 
+/* Verify if has an way from vertice u to vertice w */
 
 template<class T>
 bool Graph<T>::HasWay(T u, T w){
@@ -93,6 +96,8 @@ bool Graph<T>::HasWay(T u, T w){
 	return visits[w];
 };
 
+/* Reach the Graph - Complementary function of Graph<T>::HasWay */
+
 template<class T>
 void Graph<T>::ReachV(T v, map<T, bool>& visited){
 
@@ -102,16 +107,13 @@ void Graph<T>::ReachV(T v, map<T, bool>& visited){
 
 	for(int i = 0; i < neighboors.size(); i++){
 
-		if(!visited[neighboors[i]])
+		if(!visited[neighboors[i]]){
 			ReachV(neighboors[i], visited);
+		}
 	}
 };
 
-template <class T>
-void Graph<T>::SortEdges(){
-
-	sort (this->edges.begin(), this->edges.begin() + this->edges.size());
-};
+/* Sort the vertice vector **Is used ever a vertice is inserted */
 
 template <class T>
 void Graph<T>::SortVertices(){
@@ -119,34 +121,36 @@ void Graph<T>::SortVertices(){
 	sort (this->vertices.begin(), this->vertices.begin() + this->vertices.size());
 };
 
+/* Get the Neighboors of vertice v */
+
 template <class T>
 vector<T> Graph<T>::GetNeighboors(T v){
 	
 	vector<T> neighboors = vector<T>();
 	neighboors.clear();
 
-	for(int i = 0; i < this->edges.size(); i++){
-
-		if(this->edges[i].IsInitial(v, this->isDigraph))
-			neighboors.push_back(this->edges[i].GetOtherV(v));
+	for (typename std::map<string,t_Edge>::iterator it=this->Edges.begin(); it!=this->Edges.end(); ++it){
+		if(it->second.IsInitial(v, this->isDigraph)){
+			neighboors.push_back(it->second.GetOtherV(v));
+		}
 	}
-
 	return neighboors;
 }
 
+/* Print a representation of this Graph */
 
 template<class T>
 void Graph<T>::Print(){
 
 	for(int i = 0; i < this->vertices.size(); i++){
 		cout << this->vertices[i] << ": ";
-
-		for(int j = 0; j < this->edges.size(); j++){
-			
-			if(this->isDigraph ? this->edges[j].u == this->vertices[i] : this->edges[j].Contains(this->vertices[i])){
-				cout << this->edges[j].GetOtherV(this->vertices[i]) << " ";
+		
+		for (typename std::map<string,t_Edge>::iterator it=this->Edges.begin(); it!=this->Edges.end(); ++it){
+			if(this->isDigraph ? it->second.u == this->vertices[i] : it->second.Contains(this->vertices[i])){
+				cout << it->second.GetOtherV(this->vertices[i]) << " ";
 			}
 		}
+
 		printf("\n");
 	}
 };
@@ -155,13 +159,13 @@ void Graph<T>::Print(){
 template<class T>
 Graph<T>::Graph(){
 	this->vertices.clear();
-	this->edges.clear();
+	this->Edges.clear();
 	this->isDigraph = false;
 };
 
 template<class T>
 Graph<T>::Graph(bool isDigraph){
 	this->vertices.clear();
-	this->edges.clear();
+	this->Edges.clear();
 	this->isDigraph = isDigraph;
 };
