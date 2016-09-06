@@ -19,13 +19,13 @@ public:
 	T u;
 	T w;
 	
+	double weight;
 	bool isDigraph;
 
 public:
 
 	vector<T> GetEdge();
-	Edge<T>(T u, T w, bool isDigraph);
-	Edge<T>(T u, T w);
+	Edge<T>(T u, T w, bool isDigraph = false, double weight = 1);
 
 	string ToString();
 	bool Contains(T v);

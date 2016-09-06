@@ -17,10 +17,9 @@ int Graph<T>::Deg(T v){
 		return -1;
 
 	int Sum = 0;
-
-	for (typename std::map<string,t_Edge>::iterator it=this->Edges.begin(); it!=this->Edges.end(); ++it)
-		Sum+= (it->second.Contains(v)) ? 1 : 0;
-
+	for (it_Edges = Edges.begin(); it_Edges!=Edges.end(); ++it_Edges)
+		Sum+= (it_Edges->second.Contains(v));
+	
 	return Sum;
 };
 
@@ -61,7 +60,7 @@ void Graph<T>::InsertVertice(T v){
 template<class T>
 bool Graph<T>::ContainsEdge(t_Edge e){
 	
-	return (this->Edges.find(this->MakeHash(e))!= this->Edges.end());
+	return (Edges.find(MakeHash(e))!= Edges.end());
 };
 
 /* Insert an Edge in Graph if her not contains it */
@@ -70,7 +69,7 @@ template<class T>
 void Graph<T>::InsertEdge(t_Edge e){
 
 	if(!this->ContainsEdge(e)){
-		this->Edges.insert(std::pair<string,t_Edge>(this->MakeHash(e),e));
+		Edges.insert(std::pair<string,t_Edge>(MakeHash(e),e));
 	}
 };
 
@@ -81,6 +80,39 @@ void Graph<T>::RemoveEdge(t_Edge e){
 
 	if(this->ContainsEdge(e)){
 		this->Edges.erase(this->MakeHash());
+	}
+};
+
+/*Realize a DFS search in current Graph */
+
+template<class T>
+map<string, int> Graph<T>::DFS(){
+
+	map<string, int> visiteds = map<string, int>();
+	int count = 0;
+	for(int i =0; i < vertices.size(); i++){
+
+		if(visiteds.find(functions.VerticeToString(vertices[i]))== visiteds.end()){
+			DFSR(i, visiteds, count);
+		}	
+	}
+
+	return visiteds;
+};
+
+/* Complementary function to realize DFS */
+
+template<class T>
+void Graph<T>::DFSR(int i, map<string, int>& visiteds, int& count){
+
+	visiteds.insert(std::pair<string,int>(functions.VerticeToString(vertices[i]),count++));
+
+	vector<T> neighboors = GetNeighboors(vertices[i]);
+
+	for(int j = 0; j < neighboors.size(); j++){
+
+		if(visiteds.find(functions.VerticeToString(vertices[j]))== visiteds.end())
+			DFSR(j, visiteds, count);
 	}
 };
 
@@ -129,9 +161,9 @@ vector<T> Graph<T>::GetNeighboors(T v){
 	vector<T> neighboors = vector<T>();
 	neighboors.clear();
 
-	for (typename std::map<string,t_Edge>::iterator it=this->Edges.begin(); it!=this->Edges.end(); ++it){
-		if(it->second.IsInitial(v, this->isDigraph)){
-			neighboors.push_back(it->second.GetOtherV(v));
+	for (it_Edges = Edges.begin(); it_Edges!=Edges.end(); ++it_Edges){
+		if(it_Edges->second.IsInitial(v, isDigraph)){
+			neighboors.push_back(it_Edges->second.GetOtherV(v));
 		}
 	}
 	return neighboors;
@@ -143,29 +175,22 @@ template<class T>
 void Graph<T>::Print(){
 
 	for(int i = 0; i < this->vertices.size(); i++){
-		cout << this->vertices[i] << ": ";
 		
-		for (typename std::map<string,t_Edge>::iterator it=this->Edges.begin(); it!=this->Edges.end(); ++it){
-			if(this->isDigraph ? it->second.u == this->vertices[i] : it->second.Contains(this->vertices[i])){
-				cout << it->second.GetOtherV(this->vertices[i]) << " ";
-			}
-		}
+		cout << this->vertices[i] << ": ";
 
+		for (it_Edges = Edges.begin(); it_Edges!=Edges.end(); ++it_Edges)
+			if(it_Edges->second.IsInitial(vertices[i], isDigraph))
+				cout << it_Edges->second.GetOtherV(vertices[i]) << " ";
+		
 		printf("\n");
 	}
 };
 	// -- Constructors
 	
 template<class T>
-Graph<T>::Graph(){
-	this->vertices.clear();
-	this->Edges.clear();
-	this->isDigraph = false;
-};
-
-template<class T>
 Graph<T>::Graph(bool isDigraph){
 	this->vertices.clear();
 	this->Edges.clear();
 	this->isDigraph = isDigraph;
+	this->functions = Functions<T>();
 };

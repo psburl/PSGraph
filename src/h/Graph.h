@@ -9,6 +9,7 @@
 #include <algorithm>
 
 #include "../h/Edge.h"
+#include "../h/Functions.h"
 
 using namespace std;
 
@@ -20,8 +21,13 @@ class Graph{
 public:
 	vector<T> vertices;
 	map <string, t_Edge> Edges;
+	
+	typename 
+	map<string,t_Edge>::iterator  it_Edges;
+
 	bool isDigraph;
 
+	Functions<T> functions; 
 public:
 	int Deg(T v);
 	int Deg();
@@ -36,16 +42,22 @@ public:
 	void RemoveEdge(t_Edge e);
 
 	bool HasWay(T u, T w);
-	void ReachV(T v, map<T, bool>& visited);
+	
 	vector<T> GetNeighboors(T v);
+
+	map<string, int> DFS();
 
 	void SortEdges();
 	void SortVertices();
 
 	void Print();
+	
+private: 
+	void ReachV(T v, map<T, bool>& visited);
+	void DFSR(int i, map<string, int>& visiteds, int& count);
 
-	Graph<T>();	
-	Graph<T>(bool isDigraph);
+public:
+	Graph<T>(bool isDigraph = false);
 };
 
 

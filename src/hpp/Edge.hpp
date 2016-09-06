@@ -1,4 +1,4 @@
-	// -- operators
+// -- operators
 
 template<class T>
 bool Edge<T>::operator==(Edge<T> e){
@@ -34,6 +34,8 @@ template <class T>
 bool Edge<T>::Contains(T v){
 	return (this->u == v || this->w == v);
 };
+
+/* Verifiry if vertice v is the start of Edge, so, if is adjacent to u */
 
 template <class T>
 bool Edge<T>::IsInitial(T v, bool isDigraph){
@@ -79,16 +81,11 @@ string Edge<T>::ToString(){
 
 	// -- Constructors --
 
-template <class T>
-Edge<T>::Edge(T u, T w){
-	this->u = u;
-	this->w = w;
-	this->isDigraph = false;
-};
 
 template <class T>
-Edge<T>::Edge(T u, T w, bool isDigraph){
+Edge<T>::Edge(T u, T w, bool isDigraph, double weight){
 	this->u = u;
 	this->w = w;
 	this->isDigraph = isDigraph;
+	this->weight = weight;
 };
