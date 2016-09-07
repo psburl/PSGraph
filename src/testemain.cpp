@@ -13,7 +13,7 @@
 
 using namespace std;
 
-#define GType string	
+#define GType int	
 
 #define m_Edge Edge<GType>
 
@@ -21,19 +21,19 @@ int main(void){
 
 	Graph<GType> G = Graph<GType>();
 
-	G.InsertVertice("a");
-	G.InsertVertice("b");
-	G.InsertVertice("c");
-	G.InsertEdge(m_Edge("a", "b"));
-	G.InsertEdge(m_Edge("b", "c"));
+	G.InsertVertice(1);
+	G.InsertVertice(2);
+	G.InsertVertice(3);
+	G.InsertEdge(m_Edge(1, 2));
+	G.InsertEdge(m_Edge(2, 3));
 
-	map<int, bool> visited;
+	map<string, int> visited;
 	
-	if(G.HasWay("a","c")) cout << "sim\n";
+	if(G.HasWay(1,3)) cout << "sim\n";
 	G.DFS();
+	cout << G.CountConnexities(visited) << "\n";
 	G.Print();
 
-		
 };
 
 #endif

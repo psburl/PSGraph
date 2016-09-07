@@ -83,7 +83,7 @@ void Graph<T>::RemoveEdge(t_Edge e){
 	}
 };
 
-/*Realize a DFS search in current Graph */
+/* Realize a DFS search in current Graph */
 
 template<class T>
 map<string, int> Graph<T>::DFS(){
@@ -93,7 +93,7 @@ map<string, int> Graph<T>::DFS(){
 	for(int i =0; i < vertices.size(); i++){
 
 		if(visiteds.find(functions.VerticeToString(vertices[i]))== visiteds.end()){
-			DFSR(i, visiteds, count);
+			DFSR(vertices[i], visiteds, count);
 		}	
 	}
 
@@ -103,17 +103,43 @@ map<string, int> Graph<T>::DFS(){
 /* Complementary function to realize DFS */
 
 template<class T>
-void Graph<T>::DFSR(int i, map<string, int>& visiteds, int& count){
+void Graph<T>::DFSR(T vertice, map<string, int>& visiteds, int& count){
 
-	visiteds.insert(std::pair<string,int>(functions.VerticeToString(vertices[i]),count++));
+	visiteds.insert(std::pair<string,int>(functions.VerticeToString(vertice),count++));
 
-	vector<T> neighboors = GetNeighboors(vertices[i]);
+	vector<T> neighboors = GetNeighboors(vertice);
 
-	for(int j = 0; j < neighboors.size(); j++){
+	for(int j = 0; j < neighboors.size(); j++)
+		if(visiteds.find(functions.VerticeToString(neighboors[j]))== visiteds.end())
+			DFSR(neighboors[j], visiteds, count);
+};
 
-		if(visiteds.find(functions.VerticeToString(vertices[j]))== visiteds.end())
-			DFSR(j, visiteds, count);
-	}
+/* Count how many connexities components has in Graph */
+
+template<class T>
+int Graph<T>::CountConnexities(map<string, int>& componentGroup){
+
+	int componentsQuantity = 0;
+
+	for(int i =0; i < vertices.size(); i++)
+		if(componentGroup.find(functions.VerticeToString(vertices[i]))== componentGroup.end())
+			DFSCOMP(vertices[i], componentGroup, componentsQuantity++);
+	
+	return componentsQuantity;
+};
+
+/* Complementary function of CountConnexities */
+
+template<class T>
+void Graph<T>::DFSCOMP(T vertice, map<string, int>& componentGroup, int quantity){
+
+	componentGroup.insert(std::pair<string,int>(functions.VerticeToString(vertice),quantity));
+
+	vector<T> neighboors = GetNeighboors(vertice);
+
+	for(int j = 0; j < neighboors.size(); j++)
+		if(componentGroup.find(functions.VerticeToString(neighboors[j]))== componentGroup.end())
+			DFSCOMP(neighboors[j], componentGroup, quantity);
 };
 
 /* Verify if has an way from vertice u to vertice w */
@@ -161,11 +187,10 @@ vector<T> Graph<T>::GetNeighboors(T v){
 	vector<T> neighboors = vector<T>();
 	neighboors.clear();
 
-	for (it_Edges = Edges.begin(); it_Edges!=Edges.end(); ++it_Edges){
-		if(it_Edges->second.IsInitial(v, isDigraph)){
+	for (it_Edges = Edges.begin(); it_Edges!=Edges.end(); ++it_Edges)
+		if(it_Edges->second.IsInitial(v, isDigraph))
 			neighboors.push_back(it_Edges->second.GetOtherV(v));
-		}
-	}
+		
 	return neighboors;
 }
 

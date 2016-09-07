@@ -24,10 +24,12 @@ public:
 	
 	typename 
 	map<string,t_Edge>::iterator  it_Edges;
-
+	typename 
+	vector<T>::iterator  it_Vertices;
+	Functions<T> functions; 
+	
 	bool isDigraph;
 
-	Functions<T> functions; 
 public:
 	int Deg(T v);
 	int Deg();
@@ -46,6 +48,7 @@ public:
 	vector<T> GetNeighboors(T v);
 
 	map<string, int> DFS();
+	int CountConnexities(map<string, int>& componentGroup);
 
 	void SortEdges();
 	void SortVertices();
@@ -54,7 +57,8 @@ public:
 	
 private: 
 	void ReachV(T v, map<T, bool>& visited);
-	void DFSR(int i, map<string, int>& visiteds, int& count);
+	void DFSR(T vertice, map<string, int>& visiteds, int& count);
+	void DFSCOMP(T vertice, map<string, int>& componentGroup, int quantity);
 
 public:
 	Graph<T>(bool isDigraph = false);
