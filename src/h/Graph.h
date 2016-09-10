@@ -10,6 +10,7 @@
 
 #include "../h/Edge.h"
 #include "../h/Functions.h"
+#include "../h/UtilClass.h"
 
 using namespace std;
 
@@ -47,7 +48,7 @@ public:
 	
 	vector<T> GetNeighboors(T v);
 
-	map<string, int> DFS();
+	DFSstructure<T> DFS();
 	int CountConnexities(map<string, int>& componentGroup);
 
 	void SortEdges();
@@ -57,7 +58,7 @@ public:
 	
 private: 
 	void ReachV(T v, map<T, bool>& visited);
-	void DFSR(T vertice, map<string, int>& visiteds, int& count);
+	void DFSR(T vertice, DFSstructure<T>& dfsSTC, int& preCount, int& posCount);
 	void DFSCOMP(T vertice, map<string, int>& componentGroup, int quantity);
 
 public:

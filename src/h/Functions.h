@@ -16,13 +16,10 @@ class Functions{
 public:
     
     string VerticeToString(T v);
-    
-    
 
 public:
 	Functions<T>();
 };
-
 
 #include "../hpp/Functions.hpp"
 #endif

@@ -86,32 +86,41 @@ void Graph<T>::RemoveEdge(t_Edge e){
 /* Realize a DFS search in current Graph */
 
 template<class T>
-map<string, int> Graph<T>::DFS(){
+DFSstructure<T> Graph<T>::DFS(){
 
-	map<string, int> visiteds = map<string, int>();
-	int count = 0;
+	DFSstructure<T> dfsSTC = DFSstructure<T>(); 
+
+	int preCount = 0, posCount = 0;
 	for(int i =0; i < vertices.size(); i++){
-
-		if(visiteds.find(functions.VerticeToString(vertices[i]))== visiteds.end()){
-			DFSR(vertices[i], visiteds, count);
-		}	
+		if(dfsSTC.ContainsKey(e_preOrder, functions.VerticeToString(vertices[i]))){
+			
+			dfsSTC.dad[functions.VerticeToString(vertices[i])] = vertices[i];
+			DFSR(vertices[i], dfsSTC, preCount, posCount);
+		}
 	}
-
-	return visiteds;
+	return dfsSTC;
 };
 
 /* Complementary function to realize DFS */
 
 template<class T>
-void Graph<T>::DFSR(T vertice, map<string, int>& visiteds, int& count){
+void Graph<T>::DFSR(T vertice, DFSstructure<T>& dfsSTC, int& preCount, int& posCount){
 
-	visiteds.insert(std::pair<string,int>(functions.VerticeToString(vertice),count++));
+	dfsSTC.preOrder[functions.VerticeToString(vertice)] = preCount++;
 
 	vector<T> neighboors = GetNeighboors(vertice);
 
-	for(int j = 0; j < neighboors.size(); j++)
-		if(visiteds.find(functions.VerticeToString(neighboors[j]))== visiteds.end())
-			DFSR(neighboors[j], visiteds, count);
+	for(int j = 0; j < neighboors.size(); j++){
+
+		if(dfsSTC.ContainsKey(e_preOrder, functions.VerticeToString(neighboors[j]))){
+
+			dfsSTC.dad[functions.VerticeToString(neighboors[j])] = vertice;
+
+			DFSR(neighboors[j], dfsSTC, preCount, posCount);
+		}
+
+		dfsSTC.posOrder[functions.VerticeToString(vertice)] = posCount++;
+	}
 };
 
 /* Count how many connexities components has in Graph */

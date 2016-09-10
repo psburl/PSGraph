@@ -10,6 +10,7 @@
 
 #include "h/Edge.h"
 #include "h/Graph.h"
+#include "h/UtilClass.h"
 
 using namespace std;
 
@@ -30,9 +31,11 @@ int main(void){
 	map<string, int> visited;
 	
 	if(G.HasWay(1,3)) cout << "sim\n";
-	G.DFS();
+	DFSstructure<GType> DFS_ = G.DFS();
 	cout << G.CountConnexities(visited) << "\n";
 	G.Print();
+
+	DFS_.Print();
 
 };
 
