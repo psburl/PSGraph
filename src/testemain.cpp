@@ -36,7 +36,8 @@ int main(void){
 	G.Print();
 
 	DFS_.Print();
-
+	if(G.ExistsCycle())
+		cout << "tem ciclo\n";
 };
 
 #endif

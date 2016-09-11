@@ -50,6 +50,7 @@ public:
 
 	DFSstructure<T> DFS();
 	int CountConnexities(map<string, int>& componentGroup);
+	bool ExistsCycle();
 
 	void SortEdges();
 	void SortVertices();

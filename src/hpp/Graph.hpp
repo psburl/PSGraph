@@ -90,7 +90,8 @@ DFSstructure<T> Graph<T>::DFS(){
 
 	DFSstructure<T> dfsSTC = DFSstructure<T>(); 
 
-	int preCount = 0, posCount = 0;
+	int preCount = 0; 
+	int posCount = 0;
 	for(int i =0; i < vertices.size(); i++){
 		if(dfsSTC.ContainsKey(e_preOrder, functions.VerticeToString(vertices[i]))){
 			
@@ -118,9 +119,32 @@ void Graph<T>::DFSR(T vertice, DFSstructure<T>& dfsSTC, int& preCount, int& posC
 
 			DFSR(neighboors[j], dfsSTC, preCount, posCount);
 		}
-
-		dfsSTC.posOrder[functions.VerticeToString(vertice)] = posCount++;
 	}
+	dfsSTC.posOrder[functions.VerticeToString(vertice)] = posCount++;
+};
+
+/*  Verify if Exists cycles in current Graph  */
+
+template<class T>
+bool Graph<T>::ExistsCycle(){
+
+	DFSstructure<T> dfsStc = this->DFS();
+
+	for(int i =0; i < vertices.size(); i++){
+
+		vector<T> neighboors = GetNeighboors(vertices[i]);
+
+		for(int j = 0; j < neighboors.size(); j++){
+
+			string hashV = functions.VerticeToString(vertices[i]);
+			string hashN = functions.VerticeToString(neighboors[j]);
+
+			if(	dfsStc.preOrder[hashV] > dfsStc.preOrder[hashN] && 
+				dfsStc.posOrder[hashV] < dfsStc.posOrder[hashN])
+				return true;
+		}
+	}
+	return false;
 };
 
 /* Count how many connexities components has in Graph */
