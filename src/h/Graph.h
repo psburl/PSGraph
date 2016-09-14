@@ -22,10 +22,10 @@ class Graph{
 public:
 	vector<T> vertices;
 	map <string, t_Edge> Edges;
-	
 	typename 
 	map<string,t_Edge>::iterator  it_Edges;
 	typename 
+	
 	vector<T>::iterator  it_Vertices;
 	Functions<T> functions; 
 	
@@ -52,6 +52,9 @@ public:
 	int CountConnexities(map<string, int>& componentGroup);
 	bool ExistsCycle();
 
+	Graph<T> GetReverse();
+	int Kosaraju(map<T, int>& componentGroup);
+
 	void SortEdges();
 	void SortVertices();
 
@@ -61,6 +64,7 @@ private:
 	void ReachV(T v, map<T, bool>& visited);
 	void DFSR(T vertice, DFSstructure<T>& dfsSTC, int& preCount, int& posCount);
 	void DFSCOMP(T vertice, map<string, int>& componentGroup, int quantity);
+	void DFSRsc(T vertice, map<T, int>& componentGroup, int quantity);
 
 public:
 	Graph<T>(bool isDigraph = false);

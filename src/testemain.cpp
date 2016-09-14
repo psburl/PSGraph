@@ -27,6 +27,7 @@ int main(void){
 	G.InsertVertice(3);
 	G.InsertEdge(m_Edge(1, 2));
 	G.InsertEdge(m_Edge(2, 3));
+	G.InsertEdge(m_Edge(3, 1));
 
 	map<string, int> visited;
 	
@@ -35,9 +36,15 @@ int main(void){
 	cout << G.CountConnexities(visited) << "\n";
 	G.Print();
 
+	Graph<GType> r_G = G.GetReverse();
+
+	
+
 	DFS_.Print();
 	if(G.ExistsCycle())
 		cout << "tem ciclo\n";
+map<GType, int> teste = map<GType, int>();
+		cout << G.Kosaraju(teste) << "\n";
 };
 
 #endif

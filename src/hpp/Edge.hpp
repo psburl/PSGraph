@@ -42,6 +42,12 @@ bool Edge<T>::IsInitial(T v, bool isDigraph){
 	return isDigraph ? this->u == v : this->Contains(v);
 };
 
+template <class T>
+Edge<T> Edge<T>::GetReverse(){
+	return Edge<T>(this->w, this->u);
+};
+
+
 
 /*return the other extreme of an edge*/
 

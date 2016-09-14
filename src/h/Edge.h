@@ -31,6 +31,7 @@ public:
 	bool Contains(T v);
 	bool IsInitial(T v, bool isDigraph);
 	T GetOtherV(T v);
+	Edge<T> GetReverse();
 
 	bool operator==(Edge<T> e);
 	bool operator!=(Edge<T> e);

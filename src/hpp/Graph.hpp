@@ -70,6 +70,11 @@ void Graph<T>::InsertEdge(t_Edge e){
 
 	if(!this->ContainsEdge(e)){
 		Edges.insert(std::pair<string,t_Edge>(MakeHash(e),e));
+
+		if(!this->isDigraph){
+
+			Edges.insert(std::pair<string,t_Edge>(MakeHash(e.GetReverse()),e.GetReverse()));
+		}
 	}
 };
 
@@ -145,6 +150,87 @@ bool Graph<T>::ExistsCycle(){
 		}
 	}
 	return false;
+};
+
+/*  Generate an Graph with G vertex and inverse edges of diagraph G,
+ * 	if v-w is a G edge -> w-v is a r_G edge */
+
+template<class T>
+Graph<T>  Graph<T>::GetReverse(){
+
+	if(this->isDigraph)
+		return this;
+
+	Graph<T> r_Graph = Graph<T>(this->isDigraph);
+
+	r_Graph.vertices = this->vertices;
+
+	for(int i =0; i < vertices.size(); i++){
+		
+		vector<T> neighboors = GetNeighboors(vertices[i]);
+
+		for(int j = 0; j < neighboors.size(); j++){
+		
+			r_Graph.InsertEdge(t_Edge(neighboors[j], vertices[i]));
+		}
+	}
+
+	return r_Graph;
+};
+
+/*  Kosaraju-Sharir algorithm.. find the strongly connected components of a directed graph */
+
+template<class T>
+int Graph<T>::Kosaraju(map<T, int>& componentGroup){
+
+	int preCount = 0;
+	int posCount = 0;
+	int quantity = 0;
+
+	vector<T> posOrderSorted = vector<T>();
+	posOrderSorted.resize(this->vertices.size());
+
+	Graph r_Graph = this->GetReverse();
+	DFSstructure<T> dfsSTC = DFSstructure<T>(); 
+
+	// Phase 1
+
+	for(int i =0; i < vertices.size(); i++){
+		// if vertice[i] is not visited.
+		if(dfsSTC.ContainsKey(e_preOrder, functions.VerticeToString(vertices[i])))
+			r_Graph.DFSR(vertices[i], dfsSTC, preCount, posCount);
+	}
+ 
+	/* Sort the posOrder map to vector */	
+	for(int i =0; i < vertices.size(); i++)
+		posOrderSorted[dfsSTC.posOrder[functions.VerticeToString(vertices[i])]]  = vertices[i];
+	
+	//Phase 2
+	for(int i = vertices.size(); i >= 0; i--){
+
+		T v = posOrderSorted[i];
+
+		if(componentGroup.find(v)== componentGroup.end()){
+			DFSRsc(v, componentGroup, quantity);
+			quantity++;
+		}
+	}
+
+	return quantity;
+};
+
+/* Complementary function of Kosaraju-Sharir algorithm */
+
+template<class T>
+void Graph<T>::DFSRsc(T vertice, map<T, int>& componentGroup, int quantity){
+
+	componentGroup[vertice] = quantity;
+
+	vector<T> neighboors = GetNeighboors(vertice);
+	
+	for(int j = 0; j < neighboors.size(); j++)
+		if(componentGroup.find(neighboors[j])== componentGroup.end())
+			DFSRsc(neighboors[j], componentGroup, quantity);
 };
 
 /* Count how many connexities components has in Graph */
