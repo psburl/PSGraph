@@ -10,4 +10,10 @@ Actually, the PSGraph contains this artifices:
 The vertex is a generic basic type (int, double, string..).
 
 ## Edges 
-are composed by : 2 Vertex, A double weight, A bool flag called 'isDigraph' to set if this edge has direction
+are composed by : 
+######2 Vertex;
+######A double weight;
+######A bool flag called 'isDigraph' to set if this edge has direction.
+
+####Methods
+
